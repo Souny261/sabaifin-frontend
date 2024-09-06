@@ -47,7 +47,7 @@ export default function Navbar() {
                         <Link href="/" >
                             <div className='pl-2 flex flex-col items-start justify-start'>
                                 <div className='font-bold text-xl lg:text-2xl cursor-pointer items-center text-gray-800'>
-                                    SabaiFin
+                                    SabaiOps
                                 </div>
                                 <div className='text-gray-500 text-xs'>
                                     Financial Calculators
