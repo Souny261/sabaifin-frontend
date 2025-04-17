@@ -22,12 +22,16 @@ export default function Index() {
       </div>
       <MaxWidthWrapper>
         <LoanCalculator />
-        <ComparisonSection
-          loanAmount={mainReducer.Loan?.loanAmount ?? 0}
-          loanTerm={mainReducer.Loan?.loanTerm ?? 0}
-          interestRate={mainReducer.Loan?.interestRate ?? 0}
-          // onApply={() => alert("Apply button clicked")}
-        />
+        {
+          mainReducer.Loan && (
+            <ComparisonSection
+              loanAmount={mainReducer.Loan?.loanAmount ?? 0}
+              loanTerm={mainReducer.Loan?.loanTerm ?? 0}
+              interestRate={mainReducer.Loan?.interestRate ?? 0}
+            // onApply={() => alert("Apply button clicked")}
+            />
+          )
+        }
         <FeaturesSection />
         <TestimonialsSection />
         <FAQSection />

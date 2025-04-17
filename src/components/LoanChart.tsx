@@ -1,4 +1,5 @@
 
+"use client";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,6 +18,7 @@ import {
   AreaChart as RechartsAreaChart,
   Line
 } from "recharts";
+
 import { formatCurrency } from "@/lib/calculateLoan";
 
 interface LoanChartProps {
@@ -40,6 +42,7 @@ const LoanChart = ({
   loanType = "amortized",
   amortizedSubType = "equal-installment"
 }: LoanChartProps) => {
+
   // Prepare data for charts
   const balanceData = amortizationSchedule.filter((_, index) => index % 3 === 0).map(item => ({
     month: item.month,
@@ -107,6 +110,7 @@ const LoanChart = ({
 
           <TabsContent value="balance" className="mt-0">
             <div className="h-[300px]">
+
               <ResponsiveContainer width="100%" height="100%">
                 <RechartsAreaChart data={balanceData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                   <defs>

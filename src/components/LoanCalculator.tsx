@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -17,10 +18,16 @@ import {
   LoanResult
 } from "@/lib/calculateLoan";
 import { formSchema, LoanFormValues } from "@/core/schema/LoanForm";
-import LoanChart from "./LoanChart";
 import AmortizationSchedule from "./AmortizationSchedule";
 import { useAppDispatch } from "@/data/redux/store";
 import { setLoan } from "@/data/redux/slices/mainSlice";
+
+import dynamic from "next/dynamic";
+
+const LoanChart = dynamic(() => import("@/components/LoanChart"), {
+  ssr: false, // <-- THIS IS IMPORTANT to disable server-side rendering
+});
+
 
 const LoanCalculator = () => {
   const dispatch = useAppDispatch();
@@ -37,7 +44,6 @@ const LoanCalculator = () => {
 
   const [result, setResult] = useState<LoanResult | null>(null);
   const [isFirstCalculation, setIsFirstCalculation] = useState(true);
-  const [hasInitialized, setHasInitialized] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<LoanFormValues>({
@@ -77,7 +83,6 @@ const LoanCalculator = () => {
       },
     });
   };
-
   const onSubmit = (data: LoanFormValues) => {
     const calculationResult = calculateLoan(
       data.loanAmount,
@@ -144,35 +149,23 @@ const LoanCalculator = () => {
   };
 
   useEffect(() => {
-    // Prevent initial calculations from running during SSR
-    if (typeof window !== 'undefined' && !hasInitialized) {
-      // Mark as initialized to prevent re-running
-      setHasInitialized(true);
+    // Auto-calculate on first render
+    const defaultValues = form.getValues();
+    const initialResult = calculateLoan(
+      defaultValues.loanAmount,
+      defaultValues.interestRate,
+      defaultValues.loanTerm,
+      defaultValues.loanType,
+      defaultValues.amortizedSubType
+    );
+    setResult(initialResult);
 
-      // Auto-calculate on first client-side render
-      const defaultValues = form.getValues();
-      const initialResult = calculateLoan(
-        defaultValues.loanAmount,
-        defaultValues.interestRate,
-        defaultValues.loanTerm,
-        defaultValues.loanType,
-        defaultValues.amortizedSubType
-      );
-      setResult(initialResult);
-
-      handleCalculate({
-        ...initialResult,
-        formValues: defaultValues,
-      });
-
-      dispatch(setLoan({
-        loanAmount: defaultValues.loanAmount,
-        interestRate: defaultValues.interestRate,
-        loanTerm: defaultValues.loanTerm
-      }));
-    }
-  }, [dispatch, form, hasInitialized]);
-
+    handleCalculate({
+      ...initialResult,
+      formValues: defaultValues,
+    });
+    dispatch(setLoan({ loanAmount: defaultValues.loanAmount, interestRate: defaultValues.interestRate, loanTerm: defaultValues.loanTerm }))
+  }, [dispatch, form]);
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
     if (section) {
@@ -198,6 +191,7 @@ const LoanCalculator = () => {
             <Card className="w-full shadow-md">
               <CardHeader className="border-b bg-muted/20">
                 <CardTitle className="text-2xl">ເຄື່ອງຄິດໄລ່ສີນເຊື່ອ</CardTitle>
+
               </CardHeader>
               <CardContent>
                 <Form {...form}>
@@ -253,6 +247,7 @@ const LoanCalculator = () => {
                                         ຈຳນວນເງີນຊຳລະຄົງທີ່ທຸກເດືອນດອກເບ້ຍສ່ວນຕົ້ນຈະສູງຂື້ນ.
                                       </FormDescription>
                                     </div>
+
                                   </div>
 
                                   <div className="flex flex-row items-center space-x-2">
@@ -441,8 +436,7 @@ const LoanCalculator = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {/* Only render results on client side after initialization */}
-              {hasInitialized && result && (
+              {result && (
                 <div
                   className={`${!isFirstCalculation ? 'animate-fade-in' : ''}`}
                 >
@@ -452,7 +446,7 @@ const LoanCalculator = () => {
                       {selectedLoanType === "amortized" && form.getValues().amortizedSubType === "equal-principal" ? (
                         <div>
                           <p className="text-2xl font-bold text-primary">
-                            {hasInitialized ? formatCurrency(Math.round(result.monthlyPayment)) : ""}
+                            {formatCurrency(Math.round(result.monthlyPayment))}
                           </p>
                           <p className="text-xs text-muted-foreground mt-1">
                             (ຫຼຸດລົງຕາມເວລາ)
@@ -460,22 +454,22 @@ const LoanCalculator = () => {
                         </div>
                       ) : (
                         <p className="text-2xl font-bold text-primary">
-                          {hasInitialized ? formatCurrency(Math.round(result.monthlyPayment)) : ""}
+                          {formatCurrency(Math.round(result.monthlyPayment))}
                         </p>
                       )}
                     </div>
 
                     <div className="bg-primary/5 p-6 rounded-lg text-center">
                       <Label className="text-sm text-primary mb-1 block">ຊຳລະທັງໝົດ</Label>
-                      <p className="text-2xl font-bold text-primary">
-                        {hasInitialized ? formatCurrency(Math.round(result.totalPayment)) : ""}
+                      <p className="text-2xl font-bold text-primary"  >
+                        {formatCurrency(Math.round(result.totalPayment))}
                       </p>
                     </div>
 
                     <div className="bg-primary/5 p-6 rounded-lg text-center">
                       <Label className="text-sm text-primary mb-1 block">ດອກເບ້ຍທັງໝົດ</Label>
                       <p className="text-2xl font-bold text-primary">
-                        {hasInitialized ? formatCurrency(Math.round(result.totalInterest)) : ""}
+                        {formatCurrency(Math.round(result.totalInterest))}
                       </p>
                     </div>
                   </div>
@@ -483,28 +477,29 @@ const LoanCalculator = () => {
               )}
             </CardContent>
           </Card>
-          {/* Only render chart on client side */}
-          {hasInitialized && calculationResult && (
-            <LoanChart
-              amortizationSchedule={calculationResult.result.amortizationSchedule}
-              loanAmount={calculationResult.formValues.loanAmount}
-              totalInterest={calculationResult.result.totalInterest}
-              loanType={calculationResult.formValues.loanType}
-              amortizedSubType={calculationResult.formValues.amortizedSubType}
-            />
+          {calculationResult && (<LoanChart
+            amortizationSchedule={calculationResult.result.amortizationSchedule}
+            loanAmount={calculationResult.formValues.loanAmount}
+            totalInterest={calculationResult.result.totalInterest}
+            loanType={calculationResult.formValues.loanType}
+            amortizedSubType={calculationResult.formValues.amortizedSubType}
+          />
           )}
         </div>
       </div>
       <div id="table">
-        {/* Only render table on client side */}
-        {hasInitialized && calculationResult && (
-          <AmortizationSchedule
-            schedule={calculationResult.result.amortizationSchedule}
-            exportCSV={handleExportCSV}
-          />
-        )}
+        {
+          calculationResult && (
+            <AmortizationSchedule
+              schedule={calculationResult.result.amortizationSchedule}
+              exportCSV={handleExportCSV}
+            />
+          )
+        }
       </div>
+
     </section>
+
   );
 };
 
