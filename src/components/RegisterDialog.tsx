@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
 import {
     Dialog,
     DialogContent,
@@ -26,7 +27,12 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
-import { Loader2, CheckCircle, AlertCircle, ArrowRight, User, Phone, Target } from "lucide-react";
+import { Loader2, CheckCircle, ArrowRight, User, Phone, Target } from "lucide-react";
+import { useApplyUser } from "@/hooks/useApply";
+import { UserApplyType } from "@/core/types/loan.type";
+import { useSelector } from "react-redux";
+import { mainSelector } from "@/data/redux/slices/mainSlice";
+import * as gtag from '../lib/gtag'
 
 interface UserFormData {
     name: string;
@@ -36,9 +42,8 @@ interface UserFormData {
 
 export const RegisterDialog = () => {
     const [open, setOpen] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [registrationStatus, setRegistrationStatus] = useState<"idle" | "success" | "error">("idle");
-
+    const { mutate: apply, isPending } = useApplyUser()
     const form = useForm<UserFormData>({
         defaultValues: {
             name: "",
@@ -46,32 +51,49 @@ export const RegisterDialog = () => {
             purpose: ""
         }
     });
+    const mainReducer = useSelector(mainSelector);
+    const loanTypes = [
+        { value: "personal", label: "ກູ້ຢືມສ່ວນຕົວ (Personal Loan)" },
+        { value: "business", label: "ກູ້ຢືມທຸລະກິດ (Business Loan)" },
+        { value: "home", label: "ກູ້ຢືມເຮືອນ (Home Loan)" },
+        { value: "car", label: "ກູ້ຢືມລົດ (Car Loan)" },
+        { value: "education", label: "ກູ້ຢືມການສຶກສາ (Education Loan)" },
+        { value: "other", label: "ອື່ນໆ (Other)" },
+    ];
 
     const onSubmit = async (data: UserFormData) => {
+        gtag.event({
+            action: "[Submit] - User Register",
+            category: "click",
+            label: "open"
+        })
         try {
-            setIsSubmitting(true);
-
-            // Here you would typically send the data to your API
-            console.log("Form data submitted:", data);
-
-            // Simulate API request
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            setRegistrationStatus("success");
-            // Reset form after successful submission
-            form.reset();
-
-            // Close dialog after showing success message
-            // setTimeout(() => {
-            //     setOpen(false);
-            //     setRegistrationStatus("idle");
-            // }, 5000);
+            const payload: UserApplyType = {
+                name: data.name,
+                phone: data.phone,
+                purpose: loanTypes.find((type) => type.value === data.purpose)?.label ?? "",
+                action: "USERS",
+                amount: mainReducer.Loan?.loanAmount?.toString() ?? "",
+                term: mainReducer.Loan?.loanTerm?.toString() ?? "",
+                status: "Pending"
+            }
+            apply(payload, {
+                onSuccess: (data) => {
+                    if (data.status) {
+                        setRegistrationStatus("success");
+                        form.reset();
+                    } else {
+                        setRegistrationStatus("error");
+                    }
+                },
+                onError: () => {
+                    setRegistrationStatus("error");
+                }
+            })
 
         } catch (error) {
-            console.error("Registration error:", error);
+            console.log("error", error);
             setRegistrationStatus("error");
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
@@ -83,6 +105,11 @@ export const RegisterDialog = () => {
                 form.reset();
                 // idle
                 setRegistrationStatus("idle")
+                gtag.event({
+                    action: "[Click] - User Register",
+                    category: "click",
+                    label: "open"
+                })
             }
         }}>
             <DialogTrigger asChild>
@@ -177,12 +204,13 @@ export const RegisterDialog = () => {
                                                 </FormControl>
                                                 <div className="w-full">
                                                     <SelectContent className="w-full">
-                                                        <SelectItem value="personal" className="w-full">ກູ້ຢືມສ່ວນຕົວ (Personal Loan)</SelectItem>
-                                                        <SelectItem value="business" className="w-full">ກູ້ຢືມທຸລະກິດ (Business Loan)</SelectItem>
-                                                        <SelectItem value="home" className="w-full">ກູ້ຢືມເຮືອນ (Home Loan)</SelectItem>
-                                                        <SelectItem value="car" className="w-full">ກູ້ຢືມລົດ (Car Loan)</SelectItem>
-                                                        <SelectItem value="education" className="w-full">ກູ້ຢືມການສຶກສາ (Education Loan)</SelectItem>
-                                                        <SelectItem value="other" className="w-full">ອື່ນໆ (Other)</SelectItem>
+                                                        {
+                                                            loanTypes.map((type) => (
+                                                                <SelectItem key={type.value} value={type.value}>
+                                                                    {type.label}
+                                                                </SelectItem>
+                                                            ))
+                                                        }
                                                     </SelectContent>
                                                 </div>
                                             </Select>
@@ -206,9 +234,9 @@ export const RegisterDialog = () => {
                                         <Button
                                             type="submit"
                                             className="bg-primary hover:bg-primary/90 w-full"
-                                            disabled={isSubmitting}
+                                            disabled={isPending}
                                         >
-                                            {isSubmitting ? (
+                                            {isPending ? (
                                                 <>
                                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                     ກຳລັງດຳເນີນການ...
@@ -226,10 +254,16 @@ export const RegisterDialog = () => {
 
                 {registrationStatus === "success" && (
                     <div className="flex flex-col items-center justify-center py-8">
-                        <div className="h-20 w-20 bg-green-100 rounded-full flex items-center justify-center text-green-600 mb-4 animate-bounce">
-                            <CheckCircle className="h-10 w-10" />
+                        <div className="relative w-full h-40">
+                            <Image
+                                src="confirm.svg"
+                                alt="confirm"
+                                layout="fill"
+                                objectFit="contain"
+                                className="animate-bounce"
+                            />
                         </div>
-                        <h3 className="text-xl font-semibold text-center">ສົ່ງຂໍ້ມູນສຳເລັດແລ້ວ!</h3>
+                        <h3 className="text-xl font-semibold text-center text-green-600">ສົ່ງຂໍ້ມູນສຳເລັດແລ້ວ!</h3>
                         <p className="text-slate-500 text-center mt-2">
                             ຂອບໃຈສຳລັບການລົງທະບຽນ. ພວກເຮົາຈະຕິດຕໍ່ຫາທ່ານໃນໄວໆນີ້.
                         </p>
@@ -248,12 +282,16 @@ export const RegisterDialog = () => {
 
                 {registrationStatus === "error" && (
                     <div className="flex flex-col items-center justify-center py-8">
-                        <div className="h-20 w-20 bg-red-100 rounded-full flex items-center justify-center text-red-600 mb-4 animate-bounce">
-
-                            <AlertCircle className="h-10 w-10 text-red-500 mb-4" />
+                        <div className="relative w-full h-40">
+                            <Image
+                                src="error.svg"
+                                alt="error"
+                                layout="fill"
+                                objectFit="contain"
+                                className="animate-bounce"
+                            />
                         </div>
-
-                        <h3 className="text-xl font-semibold text-center">ເກີດຂໍ້ຜິດພາດ!</h3>
+                        <h3 className="text-xl font-semibold text-center text-red-500">ເກີດຂໍ້ຜິດພາດ!</h3>
                         <p className="text-slate-500 text-center mt-2">
                             ບໍ່ສາມາດສົ່ງຂໍ້ມູນໄດ້ໃນຂະນະນີ້. ກະລຸນາລອງໃໝ່ພາຍຫຼັງ.
                         </p>

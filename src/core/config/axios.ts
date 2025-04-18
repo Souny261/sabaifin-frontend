@@ -8,7 +8,11 @@ const axiosPrivateInstance = axios.create({
 
 const axiosPublicInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-    timeout: 10000,
+    timeout: 50000,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials: false
 });
 
 axiosPrivateInstance.interceptors.request.use(

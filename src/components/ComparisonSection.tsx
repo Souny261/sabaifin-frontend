@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { formatCurrency } from "@/lib/calculateLoan";
 import RegisterDialog from "./RegisterDialog";
+
 interface ComparisonSectionProps {
     loanAmount: number;
     loanTerm: number;

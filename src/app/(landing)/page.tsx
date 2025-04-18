@@ -15,11 +15,9 @@ import { mainSelector } from "@/data/redux/slices/mainSlice";
 export default function Index() {
   const mainReducer = useSelector(mainSelector);
   return (
-    <>
+    <div className="relative">
       <BackgroundAnimation />
-      <div className="md:pt-16">
-        <HeroSection />
-      </div>
+      <HeroSection />
       <MaxWidthWrapper>
         <LoanCalculator />
         {
@@ -39,6 +37,6 @@ export default function Index() {
       </MaxWidthWrapper>
 
       <Footer />
-    </>
+    </div>
   );
 }

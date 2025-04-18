@@ -1,12 +1,15 @@
 
+"use client";
 import React from "react";
-import { Facebook, Instagram, Twitter, Linkedin, Heart } from "lucide-react";
+import { Facebook, Twitter, Linkedin, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ROUTES } from "@/core/config/constants";
-
+ 
+import { SocialIcon } from 'react-social-icons'
 
 const Footer = () => {
+ 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
     if (section) {
@@ -27,13 +30,20 @@ const Footer = () => {
               ການ​ຄິດ​ໄລ່​ເງິນ​ກູ້​ທີ່​ງ່າຍ​ດາຍ ​ແລະ ​ໂປ່ງ​ໃສ​ເພື່ອ​ຊ່ວຍ​ໃຫ້​ທ່ານ​ຕັດ​ສິນ​ໃຈ​ທາງ​ດ້ານ​ການ​ເງິນ​ທີ່​ມີ​ຂໍ້​ມູນ​. ປຽບທຽບອັດຕາ ແລະ ນຳໃຊ້ດ້ວຍຄວາມໝັ້ນໃຈ.
             </p>
             <div className="flex space-x-4">
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button onClick={() => {
+                window.open(`https://m.me/361099100421836`, "_blank");
+
+              }} variant="ghost" size="icon" className="rounded-full">
                 <Facebook className="h-5 w-5" />
                 <span className="sr-only">Facebook</span>
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
+              <Button onClick={() => {
+                window.open(`https://wa.me/8562077707792?text=${encodeURIComponent("ສະບາຍດີ, ຂ້ອຍມີຄຳຖາມກ່ຽວກັບSabaifin.")}`, "_blank");
+              }} variant="ghost" size="icon" className="rounded-full">
+                <SocialIcon network={"whatsapp"}
+                  fgColor="black"
+                  bgColor="transparent" className="h-5 w-5 m-0" style={{ height: 29, width: 29 }} />
+                <span className="sr-only">Whatsapp</span>
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <Twitter className="h-5 w-5" />
@@ -44,6 +54,7 @@ const Footer = () => {
                 <span className="sr-only">LinkedIn</span>
               </Button>
             </div>
+
           </div>
 
           <div>

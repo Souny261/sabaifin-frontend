@@ -1,15 +1,5 @@
 export const API_ENDPOINTS = {
-    ADMIN: {
-        TODO: {
-            GET_ALL_TODOS: "/todos",
-        },
-    },
-    USER: {
-        LOAN: {
-            LOAN_TYPE: "/customer/public/loan/types",
-            LOAN: "/customer/public/loan",
-        },
-    },
+    APPLY: "/api/apply",
 };
 
 // Local Storage Keys

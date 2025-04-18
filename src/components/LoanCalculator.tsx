@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-import { BarChart4, Calculator, Calendar, Percent, Table, Wallet } from "lucide-react";
+import { ArrowDown, BarChart4, Calculator, Calendar, Percent, Table, Wallet } from "lucide-react";
 import {
   calculateLoan,
   formatCurrency,
@@ -320,7 +320,7 @@ const LoanCalculator = () => {
                                 ອັດຕາດອກເບ້ຍ (%)
                               </FormLabel>
                               <span className="text-sm font-medium text-brand-blue">
-                                {field.value}%
+                                {field.value}%/ປີ
                               </span>
                             </div>
                             <FormControl>
@@ -475,6 +475,17 @@ const LoanCalculator = () => {
                   </div>
                 </div>
               )}
+              <div className="flex flex-row space-x-4 mt-4 md:hidden">
+                <Button
+                  onClick={() => {
+                    scrollToSection("compare")
+                  }}
+                  className="bg-primary text-white hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 btn-shine w-full"
+                >
+                  ສົນໃຈສະໝັກສິນເຊື່ອ
+                  <ArrowDown className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
             </CardContent>
           </Card>
           {calculationResult && (<LoanChart
