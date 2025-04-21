@@ -43,7 +43,7 @@ export default function Header() {
                 <div className="flex items-center gap-2">
                     <Link href={ROUTES.PUBLIC.HOME} className="flex items-center font-bold text-2xl">
                         <span className="text-primary">Sabai</span>
-                        <span>fin</span>
+                        <span>Fin</span>
                     </Link>
                 </div>
 

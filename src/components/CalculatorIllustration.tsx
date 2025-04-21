@@ -14,13 +14,13 @@ export default function CalculatorIllustration() {
 
     const CalculatorContent = () => (
         <div className="space-y-4">
-            <InputField label="ວົງເງີນ (₭)" value="25,000,000" />
-            <InputField label="ອັດຕາດອກເບ້ຍ (%)" value="7.5" />
-            <InputField label="ໄລຍະເວລາ (ປີ)" value="5" />
+            <InputField label="ວົງເງີນ (₭)" value="xx,xxx,xxx" />
+            <InputField label="ອັດຕາດອກເບ້ຍ (%)" value="x.x" />
+            <InputField label="ໄລຍະເວລາ (ປີ)" value="x" />
 
             <div className="rounded-md bg-primary/5 p-4 mt-6">
                 <div className="text-sm text-primary mb-1">ຍອດຊຳລະຕໍ່ເດືອນ</div>
-                <div className="text-2xl font-bold text-primary">₭498,760</div>
+                <div className="text-2xl font-bold text-primary">₭xxx,xxx</div>
             </div>
         </div>
     );

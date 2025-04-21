@@ -25,7 +25,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <Link href={ROUTES.PUBLIC.HOME} className="flex items-center font-bold text-2xl">
               <span className="text-primary">Sabai</span>
-              <span>fin</span>
+              <span>Fin</span>
             </Link>
             <p className="text-muted-foreground mb-4 max-w-md">
               ການ​ຄິດ​ໄລ່​ເງິນ​ກູ້​ທີ່​ງ່າຍ​ດາຍ ​ແລະ ​ໂປ່ງ​ໃສ​ເພື່ອ​ຊ່ວຍ​ໃຫ້​ທ່ານ​ຕັດ​ສິນ​ໃຈ​ທາງ​ດ້ານ​ການ​ເງິນ​ທີ່​ມີ​ຂໍ້​ມູນ​. ປຽບທຽບອັດຕາ ແລະ ນຳໃຊ້ດ້ວຍຄວາມໝັ້ນໃຈ.
@@ -39,7 +39,7 @@ const Footer = () => {
                 <span className="sr-only">Facebook</span>
               </Button>
               <Button onClick={() => {
-                window.open(`https://wa.me/8562077707792?text=${encodeURIComponent("ສະບາຍດີ, ຂ້ອຍມີຄຳຖາມກ່ຽວກັບSabaifin.")}`, "_blank");
+                window.open(`https://wa.me/8562077707792?text=${encodeURIComponent("ສະບາຍດີ, ຂ້ອຍມີຄຳຖາມກ່ຽວກັບSabaiFin.")}`, "_blank");
               }} variant="ghost" size="icon" className="rounded-full">
                 <SocialIcon network={"whatsapp"}
                   fgColor="black"
@@ -140,7 +140,7 @@ const Footer = () => {
 
         <div className="border-t pt-6 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-sm text-muted-foreground mb-4 sm:mb-0">
-            © 2025 Sabaifin. All rights reserved.
+            © 2025 SabaiFin. All rights reserved.
           </p>
 
           <div className="flex items-center space-x-2">

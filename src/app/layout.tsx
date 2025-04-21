@@ -8,7 +8,7 @@ import Script from "next/script";
 const lao = Noto_Sans_Lao_Looped({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Sabaifin",
+  title: "SabaiFin",
   description: "Financial calculator in Laos",
 };
 
