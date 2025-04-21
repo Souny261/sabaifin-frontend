@@ -110,7 +110,7 @@ const Footer = () => {
                 ຄຳຄິດເຫັນ
               </Button>
               <Button
-                onClick={() => scrollToSection("compare")}
+                onClick={() => scrollToSection("faq")}
                 variant={"ghost"}
                 className="p-0 m-0 text-sm text-muted-foreground hover:text-primary transition-colors hover:bg-transparent cursor-pointer"
               >
