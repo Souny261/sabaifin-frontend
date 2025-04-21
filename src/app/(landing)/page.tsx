@@ -1,7 +1,6 @@
 "use client";
 import BackgroundAnimation from "@/components/BackgroundAnimation";
 import FeaturesSection from "@/components/FeaturesSection";
-import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/HeroSection";
 import LoanCalculator from "@/components/LoanCalculator";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
@@ -36,7 +35,7 @@ export default function Index() {
         <PartnerSection />
       </MaxWidthWrapper>
 
-      <Footer />
+    
     </div>
   );
 }

@@ -4,20 +4,30 @@ import Link from 'next/link';
 import React, { useState } from 'react'
 import { Button } from '../ui/button';
 import { ROUTES } from '@/core/config/constants';
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const pathname = usePathname();
+    const router = useRouter();
     const scrollToSection = (id: string) => {
-        const section = document.getElementById(id);
-        if (section) {
-            const offsetTop = section.getBoundingClientRect().top + window.scrollY - 100;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: "smooth",
-            });
+        const scrollToTarget = () => {
+            const section = document.getElementById(id);
+            if (section) {
+                const offsetTop = section.getBoundingClientRect().top + window.scrollY - 100;
+                window.scrollTo({ top: offsetTop, behavior: "smooth" });
+            }
             setMobileMenuOpen(false);
+        };
+
+        if (pathname !== ROUTES.PUBLIC.HOME) {
+            router.push(ROUTES.PUBLIC.HOME);
+            setTimeout(scrollToTarget, 1000);
+        } else {
+            scrollToTarget();
         }
     };
+
     const navItems = [
         { id: 'hero', name: 'ໜ້າຫຼັກ', href: ROUTES.PUBLIC.HOME },
         { id: 'calculator', name: 'ຄຳນວນເງິນກູ້', href: ROUTES.PUBLIC.HOME },

@@ -5,11 +5,12 @@ import { Facebook, Twitter, Linkedin, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ROUTES } from "@/core/config/constants";
- 
+
 import { SocialIcon } from 'react-social-icons'
+import { useRouter } from "next/navigation";
 
 const Footer = () => {
- 
+  const router = useRouter();
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
     if (section) {
@@ -117,12 +118,21 @@ const Footer = () => {
               </Button>
               <Button
                 onClick={() => {
-
+                  router.push(ROUTES.PUBLIC.TERMS);
                 }}
                 variant={"ghost"}
                 className="p-0 m-0 text-sm text-muted-foreground hover:text-primary transition-colors hover:bg-transparent cursor-pointer"
               >
-                ເງື່ອນໄຂ ແລະ ຂໍ້ກຳນົດ
+                ຂໍ້ກໍານົດ ແລະ ເງື່ອນໄຂ
+              </Button>
+              <Button
+                onClick={() => {
+                  router.push(ROUTES.PUBLIC.PRIVACY);
+                }}
+                variant={"ghost"}
+                className="p-0 m-0 text-sm text-muted-foreground hover:text-primary transition-colors hover:bg-transparent cursor-pointer"
+              >
+                ນະໂຍບາຍ
               </Button>
             </div>
           </div>
