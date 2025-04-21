@@ -32,7 +32,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <Button onClick={() => {
-                window.open(`https://m.me/361099100421836`, "_blank");
+                window.open(`https://m.me/624741684056209`, "_blank");
 
               }} variant="ghost" size="icon" className="rounded-full">
                 <Facebook className="h-5 w-5" />

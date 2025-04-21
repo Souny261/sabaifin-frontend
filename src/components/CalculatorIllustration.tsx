@@ -20,7 +20,7 @@ export default function CalculatorIllustration() {
 
             <div className="rounded-md bg-primary/5 p-4 mt-6">
                 <div className="text-sm text-primary mb-1">ຍອດຊຳລະຕໍ່ເດືອນ</div>
-                <div className="text-2xl font-bold text-primary">₭xxx,xxx</div>
+                <div className="text-2xl font-bold text-primary">xxx,xxx ກີບ</div>
             </div>
         </div>
     );

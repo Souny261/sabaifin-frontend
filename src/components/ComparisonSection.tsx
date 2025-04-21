@@ -9,7 +9,7 @@ interface ComparisonSectionProps {
     // onApply: (bank: BankOffer) => void;
 }
 
-const ComparisonSection = ({ loanAmount, loanTerm, interestRate }: ComparisonSectionProps) => {
+const ComparisonSection = ({ loanAmount, loanTerm }: ComparisonSectionProps) => {
     const sectionRef = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -87,12 +87,13 @@ const ComparisonSection = ({ loanAmount, loanTerm, interestRate }: ComparisonSec
                     </div>
                     <div>
                         <p className="text-sm text-slate-500">ອັດຕາດອກເບ້ຍທີ່ຕ້ອງການ</p>
-                        <p className="text-xl font-bold">{interestRate}%</p>
+                        {/* <p className="text-xl font-bold">{interestRate}%</p> */}
+                        <p className="text-xl font-bold">X%</p>
                     </div>
                     <div>
                         <p className="text-sm text-slate-500">ອັດຕາທີ່ດີທີ່ສຸດທີ່ມີ</p>
                         {/* <p className="text-xl font-bold text-green-600">{bestRateBank.interestRate}%</p> */}
-                        <p className="text-xl font-bold text-green-600">N/A%</p>
+                        <p className="text-xl font-bold text-green-600">X%</p>
                     </div>
                 </div>
                 <div className="flex justify-center">
