@@ -1,6 +1,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Image from 'next/image';
 
 export default function Page() {
 
@@ -14,8 +15,14 @@ export default function Page() {
                             ອັບເດດຫຼ້າສຸດ: 1 ມັງກອນ 2025
                         </p>
                     </div>
+                    <Image
+                        src="/logo.png"
+                        alt="Logo"
+                        className="w-20 h-20"
+                        width={1000}
+                        height={1000}
+                    />
                 </CardHeader>
-
                 <CardContent className="">
                     <div className="text-md text-gray-700 mb-6">
                         ກະລຸນາອ່ານ <span className='text-primary font-bold'> ຂໍ້ກໍານົດ ແລະ ເງື່ອນໄຂການນໍາໃຊ້ </span>ເຫຼົ່ານີ້ຢ່າງລະອຽດກ່ອນທີ່ຈະນໍາໃຊ້ເວັບໄຊທ໌ຂອງພວກເຮົາ. ຖ້າທ່ານບໍ່ເຫັນດີກັບຂໍ້ກໍານົດເຫຼົ່ານີ້, ກະລຸນາຢຸດການນໍາໃຊ້ເວັບໄຊທ໌ນີ້ທັນທີ.

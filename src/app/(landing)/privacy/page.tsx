@@ -1,6 +1,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Image from 'next/image';
 
 export default function Page() {
     return (
@@ -13,6 +14,13 @@ export default function Page() {
                             ອັບເດດຫຼ້າສຸດ: 1 ມັງກອນ 2025
                         </p>
                     </div>
+                    <Image
+                        src="/logo.png"
+                        alt="Logo"
+                        className="w-20 h-20"
+                        width={1000}
+                        height={1000}
+                    />
                 </CardHeader>
 
                 <CardContent className="">
